@@ -28,7 +28,7 @@ Whenever a GET request is received by the express app for the route /, it will a
 
 */
 app.get('/', (req, res) => {
-  res.send({ hi: 'there' }); // closes request, and send response (JSON object)
+  res.send({ hello: 'there' }); // closes request, and send response (JSON object)
 });
 
 // For Heroku, dynamically created port that is assigned for our app.

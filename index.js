@@ -2,40 +2,53 @@
   This app will listen for incoming requests from the Node side,
    and route those requests to different route handlers.
 */
-
-
-// CommonJS modules. Currently, NodeJS only has support for CommonJS modules.
-// CommonJS used to share code between several files.
 const express = require('express');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('./config/keys'); // Don't need to add file extension of a file we write if it ends in js
 
-//This format below uses ES2015 module system. NodeJS does not have support for this module system.
-//import express from 'express';
-
-
-// generates a running express app. Can run express() multiple times, this project will just use it once. Most projects will.
 const app = express();
 
-/**
-Route Handler
+// I want to authenticate my users
+passport.use(
+  // with Google, passport implicity refers to this GoogleStrategy as 'google'. This is used in the passport.authenticate method below.
+  new GoogleStrategy({
+    clientID: keys.googleClientID,
+    clientSecret: keys.googleClientSecret,
 
-app - Express App to register this route handler with
-get - Watch for incoming HTTP requests with this method (GET)
-/   - Specific route to watch for requests (i.e. '/')
-req - JSON object representing the incoming request
-res - JSON object representing the outgoing response
+    //route the user will be sent to after they grant permission to our app
+    callbackURL: '/auth/google/callback'
+  }, (accessToken, refreshToken, profile, done) => {
+    // When user comes back after authenticating with Google, this is called.
+    console.log('access token: ', accessToken);
+    console.log('refresh token: ', refreshToken);
+    console.log('profile: ', profile);
+  })
+);
 
-Whenever a GET request is received by the express app for the route /, it will automatically call the function in the 2nd argument.
+//Route handler, tell express to involve passport where user will be put into the auth flow.
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'] // all we want is the profile and email address. 
+  })
+);
 
+/*
+https://accounts.google.com/o/oauth2/v2/auth?
+response_type=code& JUST WANT A CODE BACK
+redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fauth%2Fgoogle%2Fcallback& PATH TO REDIRECT USER AFTER THEY GRANT PERMISSION TO APP. Need to verify this in Google API
+scope=profile%20email&
+client_id=897736878687-t04mtq35bnq803b3ncpd3goc7jt2rtu0.apps.googleusercontent.com' 
 */
-app.get('/', (req, res) => {
-  res.send({ hello: 'there' }); // closes request, and send response (JSON object)
-});
 
-// For Heroku, dynamically created port that is assigned for our app.
-const PORT = process.env.PORT || 5000 // 5000 hard coded for development environments, prod will be whatever port Heroku provides us.
+// When user gets redirected to auth/google/callback
+app.get(
+ '/auth/google/callback', 
+ passport.authenticate('google')
+//passport will see the code inside the URL. Shows the user is not trying to authenticate again, they're trying to get information to create a profile. The Google Strategy will not put them in the OAuth flow, it will handle the request differently to get the user profile.
+);
 
-// Express just telling NodeJS, watch for traffic on port PORT.
-// The express app is not listening on this port directly. That's handled by NodeJS which passes off request to express.
+const PORT = process.env.PORT || 5000
 app.listen(PORT);
-
 

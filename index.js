@@ -14,6 +14,8 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+// cookieSession and passport are middleware, code that modifies requests before sending it through the routes (i.e. get/post/delete/put)
+
 // maxAge: how can cookie exist in browser before it expires (in ms)
 // keys: encryption of cookie
 app.use(

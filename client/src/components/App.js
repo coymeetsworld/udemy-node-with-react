@@ -6,8 +6,10 @@ import React from 'react';
 // Route - to set a rule between URL and component
 import { BrowserRouter, Route} from 'react-router-dom';
 
+import Header from './Header';
+
+
 //dummy component (for now)
-const Header = () => <h2>Header</h2>
 const Dashboard = () => <h2>Dashboard</h2>
 const SurveyNew = () => <h2>SurveyNew</h2>
 const Landing = () => <h2>Landing</h2>

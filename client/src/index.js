@@ -1,5 +1,9 @@
 // Data layer control (redux)
 
+// webpack assumes an npm module for a relative path
+// don't need to give it a name, i.e. import MaterializeCSS from '/path/to/css';
+import 'materialize-css/dist/css/materialize.min.css'; // have to include extension since it's not a JS file
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 

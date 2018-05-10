@@ -12,7 +12,7 @@ export const fetchUser = () => async dispatch => {
   // Were doing this so that we don't dispatch an action until the API request is completed, thats the whole point of this.
 
   const res = await axios.get('/api/current_user')
-  dispatch({ type: FETCH_USER, payload: res});
+  dispatch({ type: FETCH_USER, payload: res.data});
   
   /*
   Under package.json, setup this proxy for ALL api calls.

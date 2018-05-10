@@ -14,12 +14,16 @@ const Landing = () => <h2>Landing</h2>
 
 
 // BrowserRouter expects AT MOST one child
+// exact in route means find exact route, not regex for the route.
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <div>
-          <Route path="/" component={Landing}/>
+          <Header/>
+          <Route exact path="/" component={Landing}/>
+          <Route exact path="/surveys" component={Dashboard}/>
+          <Route path="/surveys/new" component={SurveyNew}/>
         </div>
       </BrowserRouter>
     </div>

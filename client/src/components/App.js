@@ -17,9 +17,12 @@ const Landing = () => <h2>Landing</h2>
 
 // BrowserRouter expects AT MOST one child
 // exact in route means find exact route, not regex for the route.
+
+// When we first boot up, we want to make an API request to see if user is logged in
+//  we will use an app request we created in authRoutes.js (app.get('/api/current_user'))
 const App = () => {
   return (
-    <div>
+    <div className="container">
       <BrowserRouter>
         <div>
           <Header/>

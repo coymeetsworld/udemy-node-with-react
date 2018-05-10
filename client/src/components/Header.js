@@ -10,7 +10,7 @@ class Header extends Component {
       case false: // not logged in
         return <li><a href="/auth/google">Login With Google</a></li>
       default: //logged in
-        return <li><a>Logout</a></li>;
+        return <li><a href="/api/logout">Logout</a></li>;
     }
   }
 

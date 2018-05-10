@@ -19,9 +19,9 @@ module.exports = (app) => {
   );
 
   app.get('/api/logout', (req, res) => {
-    req.logout(); //passport attaches logout function to the request
     // this kills the cookie in the browser
-    res.send(req.user); //
+    req.logout(); //passport attaches logout function to the request
+    res.redirect('/');
   });
 
   app.get('/api/current_user', (req, res) => {

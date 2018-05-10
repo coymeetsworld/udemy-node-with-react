@@ -39,21 +39,21 @@ passport.use(
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback', //route the user will be sent to after they grant permission to our app
     proxy: true // Trust Heroku's proxy, needed for Google redirect to https to work.
-  }, (accessToken, refreshToken, profile, done) => {
+  },
+  async (accessToken, refreshToken, profile, done) => {
     // When user comes back after authenticating with Google, this is called.
 
     // Do we already have a user with this profile ID in the DB? If so, skip user creation.
-    User.findOne({ googleID: profile.id }) // async operation. Query returns a promise.
-      .then((existingUser) => {
-        if (existingUser) {
-          // Already have a record with the given profile id
-          done(null, existingUser);
-        } else {
-          // creates a modal instance, but doesn't put it in database yet (this is still mongoose). That is what .save() is for.
-          new User({ googleID: profile.id }).save() // async operation
-            .then(user => done(null, user));
-        }
-      })
+    const existingUser = await User.findOne({ googleID: profile.id }); // async operation. Query returns a promise.
+    
+    if (existingUser) { // Already have a record with the given profile id
+      return done(null, existingUser);
+    }
+
+    // creates a modal instance, but doesn't put it in database yet (this is still mongoose). That is what .save() is for.
+    const user = await new User({ googleID: profile.id }).save() // async operation
+    done(null, user);
+  }
      // Tell passport that we have finished creating a user and that it should now resume the auth process
-  })
+  )
 );

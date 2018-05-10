@@ -1,6 +1,6 @@
 // Rendering layer control (React Router)
 
-import React from 'react';
+import React, { Component} from 'react';
 
 // BrowserRouter - the brains, tells react-router how to behave. Looks at URL and says what to display
 // Route - to set a rule between URL and component
@@ -20,19 +20,27 @@ const Landing = () => <h2>Landing</h2>
 
 // When we first boot up, we want to make an API request to see if user is logged in
 //  we will use an app request we created in authRoutes.js (app.get('/api/current_user'))
-const App = () => {
-  return (
-    <div className="container">
-      <BrowserRouter>
-        <div>
-          <Header/>
-          <Route exact path="/" component={Landing}/>
-          <Route exact path="/surveys" component={Dashboard}/>
-          <Route path="/surveys/new" component={SurveyNew}/>
-        </div>
-      </BrowserRouter>
-    </div>
-  );
+class App extends Component {
+
+  // componentWillMount in future React versions may get called many times, so componentDidMount is preferred function for API calls
+  componentDidMount() {
+    
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <BrowserRouter>
+          <div>
+            <Header/>
+            <Route exact path="/" component={Landing}/>
+            <Route exact path="/surveys" component={Dashboard}/>
+            <Route path="/surveys/new" component={SurveyNew}/>
+          </div>
+        </BrowserRouter>
+      </div>
+    );
+  }
 };
 
 export default App;

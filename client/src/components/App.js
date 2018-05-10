@@ -5,6 +5,8 @@ import React, { Component} from 'react';
 // BrowserRouter - the brains, tells react-router how to behave. Looks at URL and says what to display
 // Route - to set a rule between URL and component
 import { BrowserRouter, Route} from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Header from './Header';
 
@@ -24,7 +26,7 @@ class App extends Component {
 
   // componentWillMount in future React versions may get called many times, so componentDidMount is preferred function for API calls
   componentDidMount() {
-    
+    this.props.fetchUser();
   }
 
   render() {
@@ -43,4 +45,6 @@ class App extends Component {
   }
 };
 
-export default App;
+// first argument is mapStateToProps, which we're not going to use here so its null.
+// second is actions we want to wire up
+export default connect(null, actions)(App);

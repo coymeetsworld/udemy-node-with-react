@@ -2,8 +2,8 @@
 import axios from 'axios';
 import { FETCH_USER } from './types';
 
-
-const fetchUser = () => {
+// forgot export
+export const fetchUser = () => {
 
   //applyMiddleware will see that we are returning a function from the action creator.
   // redux-thunk will automatically call the function, and pass the dispatch function as an argument.

@@ -21,6 +21,12 @@ export const fetchUser = () => async dispatch => {
   }*/
 };
   
+// Token we get back from Stripe API
+export const handleToken = token => async dispatch => {
+  const res = await axios.post('/api/stripe', token); //arbitrarily named route
+  dispatch({ type: FETCH_USER, payload: res.data });
+};
+
 
 // redux thunk notes:
 // React component calls an action creator and produces an action.

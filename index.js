@@ -6,6 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session'); // Give access to cookies
 const passport = require('passport'); // Tell passport to use cookies
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User'); // needs to be called before services/passport.js
 require('./services/passport'); // passport.js doesn't return anything, so no need to assign the value.
@@ -13,6 +14,9 @@ require('./services/passport'); // passport.js doesn't return anything, so no ne
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+
+app.use(bodyParser.json()); // hook up middleware to app.
 
 // cookieSession and passport are middleware, code that modifies requests before sending it through the routes (i.e. get/post/delete/put)
 
@@ -31,8 +35,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-require('./routes/authRoutes')(app);
 /*
 Same as
 const authRoutes = require('./routes/authRoutes');
@@ -40,6 +42,8 @@ authRoutes(app);
 
 require('./routes/authRoutes') returns a function. 2nd set of parenthesis (app) invokes the function with argument app
 */
+require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT);

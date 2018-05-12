@@ -1,9 +1,11 @@
 const keys = require('../config/keys');
 const stripe = require('stripe')(keys.stripeSecretKey);
 
-module.exports = app => {
-  app.post('/api/stripe', async (req, res) => {
+// This is a route-specific middleware
+const requireLogin = require('../middlewares/requireLogin'); // putting this middleware here instead of index.js because we only want to use it when related to Stripe API call, not all requests coming into the app.
 
+module.exports = app => {
+  app.post('/api/stripe', requireLogin, async (req, res) => {
 
     // reach out to Stripe API and finalize the charge.
     const charge = await stripe.charges.create({

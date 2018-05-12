@@ -15,6 +15,8 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+// middlewares below apply to every request that comes into the app.
+
 
 app.use(bodyParser.json()); // hook up middleware to app.
 

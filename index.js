@@ -47,6 +47,19 @@ require('./routes/authRoutes') returns a function. 2nd set of parenthesis (app) 
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
+if (process.env.NODE_ENV === 'production') {
+
+  // Express will serve up production assets, like our main.js or main.css file
+  app.use(express.static('client/build')); // see if a file that matches our request is in this directory. If so, respond with that
+
+  // If no specific file is found, this "catchall" (index.html) will be the response.
+  // Express will server up the index.html file if it doesn't recognize the route.
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')); // just serve up the html document, we assume the react router portion handles this route.
+  });
+}
+
 const PORT = process.env.PORT || 5000
 app.listen(PORT);
 

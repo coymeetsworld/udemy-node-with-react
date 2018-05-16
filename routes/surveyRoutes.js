@@ -8,6 +8,11 @@ const Survey = mongoose.model('surveys'); // Could just import Survey, but this 
 
 
 module.exports = app => {
+
+  app.get('/api/surveys/thanks', (req, res) => {
+    res.send('Thanks for voting!');
+  });
+
   // multiple params, everything will get run until it eventually gets to a function that gets a response object and sends response back to user
   // not calling requireLogin so no parenthesis (i.e. requireLogin()), just saying run this function to verify user is logged in. Nothing else will run if this fails.
   //

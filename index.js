@@ -9,6 +9,7 @@ const passport = require('passport'); // Tell passport to use cookies
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User'); // needs to be called before services/passport.js
+require('./models/Survey');
 require('./services/passport'); // passport.js doesn't return anything, so no need to assign the value.
 
 mongoose.connect(keys.mongoURI);

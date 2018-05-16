@@ -47,6 +47,7 @@ require('./routes/authRoutes') returns a function. 2nd set of parenthesis (app) 
 */
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
 

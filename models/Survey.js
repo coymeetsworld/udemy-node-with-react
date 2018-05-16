@@ -13,7 +13,7 @@ const surveySchema = new Schema({
   dateSent: Date,
   lastResponded: Date
 });
-// Every survey belongs to a specific User (referenced by the googleID of the User)
+// Every survey belongs to a specific User (referenced by the mongodb id of the User)
 // _ is not required, just a convention were using to say were using a relationship
 
 

@@ -48,7 +48,8 @@ class Mailer extends helper.Mail {
       body: this.toJSON() //from Mail base class
     });
 
-    const response = this.sgApi.API(request); // what actually sends the thing off to sendgrid
+    // await was forgotten in prev video
+    const response = await this.sgApi.API(request); // what actually sends the thing off to sendgrid
     return response;
   }
 }

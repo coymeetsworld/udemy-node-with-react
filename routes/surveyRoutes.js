@@ -15,7 +15,7 @@ module.exports = app => {
   //
   // If you're logged in, make sure you have enough credits to create a survey.
   // Were going to make this a middleware because we may use this functionality to check for credits elsewhere
-  app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+  app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
 
     const { title, subject, body, recipients } = req.body;
 
@@ -30,6 +30,17 @@ module.exports = app => {
 
     // Great place to send an email!
     const mailer = new Mailer(survey, surveyTemplate(survey));
-    mailer.send();
+
+    try {
+      await mailer.send(); // this is an async API request, need this to finish before we commit to database.
+      await survey.save();
+      req.user.credits -= 1;
+      const user = await req.user.save(); // entry will be stale, need to store result of save in a local constant.
+
+      res.send(user); // user with updated number of credits (subtracted one)
+    } catch (err) {
+      // 422 unprocessable entity, something wrong w/ the input.
+      res.status(422).send(err);
+    }
   });
 };

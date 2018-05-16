@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
+const Mailer = require('../services/Mailer');
+const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 const Survey = mongoose.model('surveys'); // Could just import Survey, but this is preferable when we do testing so we don't keep importing Survey schema over and over again.
 
@@ -26,5 +28,8 @@ module.exports = app => {
       dateSent: Date.now()
     });
 
+    // Great place to send an email!
+    const mailer = new Mailer(survey, surveyTemplate(survey));
+    mailer.send();
   });
 };

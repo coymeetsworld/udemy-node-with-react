@@ -18,6 +18,13 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 
+// temporary test code, uncomment if you want to use it for testing.
+// on browser terminal: const survey = { title: 'My title', subject: 'my subject', recipients: 'someemail@gmail.com', body: "here's the body of the email"}
+// on browser terminal: axios.post(/api/surveys', survey);
+//import axios from 'axios';
+//window.axios = axios;
+
+
 // first argument dummy function
 // second argument initial state. We don't care so we make it empty object.
 // third argument for Redux-thunk (later)

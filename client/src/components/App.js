@@ -11,11 +11,7 @@ import * as actions from '../actions';
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-
-
-//dummy component (for now)
-const SurveyNew = () => <h2>SurveyNew</h2>
-
+import SurveyNew from './surveys/SurveyNew';
 
 // BrowserRouter expects AT MOST one child
 // exact in route means find exact route, not regex for the route.
@@ -33,7 +29,7 @@ class App extends Component {
     return (
       <div className="container">
         <BrowserRouter>
-          <div>
+          <div className="container">
             <Header/>
             <Route exact path="/" component={Landing}/>
             <Route exact path="/surveys" component={Dashboard}/>

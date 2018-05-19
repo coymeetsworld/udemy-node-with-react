@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form'; // similar to connect method, has same signature below:
 import { Link } from 'react-router-dom';
 import SurveyField from './SurveyField';
+import validateEmails from '../../utils/validateEmails';
 
 
 
@@ -40,26 +41,19 @@ class SurveyForm extends Component {
   }
 }
 
+
 // values are all the values that come from the form, in this case; title, subject, body, and emails.
 function validate(values) {
   const errors = {}; 
 
-  // redux-form automatically matches the error to the instance of the Field with the same name.
+  // redux-form automatically matches the error to the instance of the Field with the same name. values.name, values.subject, values.body, values.emails
   _.each(FIELDS, ({name}) => {
     if (!values[name]) {
       errors[name] = `You must provide a ${name}`;
     }
   });
 
-  if (!values.title) {
-    errors.title = 'You must provide a title'; // redux-form automatically matches the error to the instance of the Field with the same name.
-  }
-  if (!values.subject) {
-    errors.subject = 'You must provide a subject';
-  }
-  if (!values.body) {
-    errors.body = 'You must provide a body';
-  }
+  errors.emails = validateEmails(values.emails || ''); //validate runs right away, before emails are added.
 
   return errors; // if empty, redux-form assumes everything is ok. If not, will assume the form is invalid.
 }

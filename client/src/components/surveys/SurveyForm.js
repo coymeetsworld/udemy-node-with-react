@@ -47,7 +47,7 @@ function validate(values) {
     }
   });
 
-  errors.emails = validateEmails(values.emails || ''); //validate runs right away, before emails are added.
+  errors.recipients = validateEmails(values.recipients || ''); //validate runs right away, before emails are added.
 
   return errors; // if empty, redux-form assumes everything is ok. If not, will assume the form is invalid.
 }

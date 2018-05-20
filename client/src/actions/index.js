@@ -28,6 +28,10 @@ export const handleToken = token => async dispatch => {
 };
 
 
+export const submitSurvey = values => {
+  return { type: 'submit_survey'};
+};
+
 // redux thunk notes:
 // React component calls an action creator and produces an action.
 // The dispatch function sends the action to all the different reducers in the store,

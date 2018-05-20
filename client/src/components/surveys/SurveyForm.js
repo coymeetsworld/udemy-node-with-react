@@ -4,15 +4,7 @@ import { reduxForm, Field } from 'redux-form'; // similar to connect method, has
 import { Link } from 'react-router-dom';
 import SurveyField from './SurveyField';
 import validateEmails from '../../utils/validateEmails';
-
-
-
-const FIELDS = [
-  {label: 'Survey Title', name: 'title'},
-  {label: 'Subject Line', name: 'subject'},
-  {label: 'Email Body', name: 'body'},
-  {label: 'Recipient List', name: 'emails'}
-];
+import formFields from './formFields';
 
 class SurveyForm extends Component {
 
@@ -23,15 +15,17 @@ class SurveyForm extends Component {
         <Field label="Email Body" type="text" name="body" component={SurveyField} />
         <Field label="Recipient List" type="text" name="emails" component={SurveyField} />
       </div>*/
-    return _.map(FIELDS, ({name, label}) => {
+    return _.map(formFields, ({name, label}) => {
       return <Field key={name} component={SurveyField} type="text" name={name} label={label} />
     })
   }
 
+  // <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
+  // no parenthesis after onSurveySubmit because we don't want to run it until form is submitted. Don't want to invoke yet.
   render() {
     return (
       <div>
-        <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+        <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
           {this.renderFields()}
           <Link to="/surveys" className="red btn-flat white-text">Cancel</Link>
           <button type="submit" className="teal btn-flat right white-text">Next <i className="material-icons right">done</i></button>
@@ -47,7 +41,7 @@ function validate(values) {
   const errors = {}; 
 
   // redux-form automatically matches the error to the instance of the Field with the same name. values.name, values.subject, values.body, values.emails
-  _.each(FIELDS, ({name}) => {
+  _.each(formFields, ({name}) => {
     if (!values[name]) {
       errors[name] = `You must provide a ${name}`;
     }
@@ -62,7 +56,8 @@ function validate(values) {
 // can also pass in a validate property
 export default reduxForm({
   validate,
-  form: 'surveyForm'
+  form: 'surveyForm',
+  destroyOnUnmount: false // means if this form is not currently rendered on the screen, the form isn't destroyed. This is how we persist the values when we change views (i.e. SurveyForm -> SurveyFormReview -> SurveyForm by hitting back)
 })(SurveyForm);
 
 

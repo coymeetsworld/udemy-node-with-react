@@ -2,10 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import formFields from './formFields';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions'; // this gets wired in the connect function below, which gets the submitSurvey function for the submit button.
 
 // es6 destructure onCancel prop off
-const SurveyFormReview = ({ onCancel, formValues, submitSurvey }) => {
+const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
 
   const reviewFields = _.map(formFields, ({name, label}) => {
     return (
@@ -28,7 +29,7 @@ const SurveyFormReview = ({ onCancel, formValues, submitSurvey }) => {
       >
         Back
       </button>
-      <button className="green btn-flat white-text right" onClick={() => submitSurvey(formValues)}>
+      <button className="green btn-flat white-text right" onClick={() => submitSurvey(formValues, history)}>
         Send Survey
         <i className="material-icons right">email</i>
       </button>
@@ -51,4 +52,5 @@ function mapStateToProps(state) {
 }
 
 // use connect helper to reach into redux store and pull out form values.
-export default connect(mapStateToProps, actions)(SurveyFormReview);
+// https://reacttraining.com/react-router/web/api/location // now SurveyFormReview knows about history object from react-router.
+export default connect(mapStateToProps, actions)(withRouter(SurveyFormReview));

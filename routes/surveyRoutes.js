@@ -20,16 +20,25 @@ module.exports = app => {
 
     const p = new Path('/api/surveys/:surveyId/:choice'); 
 
-    const events = _.chain(req.body) 
+    _.chain(req.body) 
       .map(({ email, url }) => {
         const match = p.test(new URL(url).pathname);
         if (match) return { email, surveyId: match.surveyId, choice: match.choice};
       }) 
       .compact() //removes undefined records
       .uniqBy('email', 'surveyId')
+      .each(({ surveyId, email, choice }) => {
+        Survey.updateOne({
+          _id: surveyId,
+          recipients: {
+            $elemMatch: { email: email, responded: false }
+          }
+        }, {
+          $inc: { [choice]: 1 },
+          $set: { 'recipients.$.responded': true }
+        }).exec(); // exec used to actually execute the query in the mongoDB.
+      })
       .value();
-    
-    console.log(events);
 
     res.send({});
   });

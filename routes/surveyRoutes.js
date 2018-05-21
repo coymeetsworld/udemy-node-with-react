@@ -12,6 +12,14 @@ const Survey = mongoose.model('surveys'); // Could just import Survey, but this 
 
 module.exports = app => {
 
+  app.get('/api/surveys', requireLogin, async (req, res) => {
+    // current user is inside the req object
+    const surveys = await Survey.find({ _user: req.user.id })
+      .select({ recipients: false }); // don't return recipients field (too much data to render on screen possibly)
+
+    res.send(surveys);
+  });
+
   app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send('Thanks for voting!');
   });

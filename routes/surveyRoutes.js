@@ -13,6 +13,11 @@ module.exports = app => {
     res.send('Thanks for voting!');
   });
 
+  app.post('/api/surveys/webhooks', (req, res) => {
+    console.log(req.body);
+    res.send({}); // just to close off request.
+  });
+
   // multiple params, everything will get run until it eventually gets to a function that gets a response object and sends response back to user
   // not calling requireLogin so no parenthesis (i.e. requireLogin()), just saying run this function to verify user is logged in. Nothing else will run if this fails.
   //

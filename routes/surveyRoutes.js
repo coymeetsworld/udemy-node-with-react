@@ -1,3 +1,6 @@
+const _ = require('lodash');
+const Path = require('path-parser').default;
+const { URL } = require('url'); // default module in the NodeJS system.
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -14,8 +17,20 @@ module.exports = app => {
   });
 
   app.post('/api/surveys/webhooks', (req, res) => {
-    console.log(req.body);
-    res.send({}); // just to close off request.
+    const events = _.map(req.body, ({ email, url }) => {
+      const pathname = new URL(url).pathname; //will just extract the route
+      const p = new Path('/api/surveys/:surveyId/:choice'); 
+      const match = p.test(pathname);
+      if (match) {
+        return { email, surveyId: match.surveyId, choice: match.choice};
+      }
+    });
+    
+    const compactEvents = _.compact(events); //removes undefined records
+    const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
+    console.log(uniqueEvents);
+
+    res.send({});
   });
 
   // multiple params, everything will get run until it eventually gets to a function that gets a response object and sends response back to user
